@@ -6,6 +6,10 @@ import androidx.lifecycle.ViewModel;
 
 public class TrashViewModel extends ViewModel{
 
+
+
+
+
     private MutableLiveData<String> mText;
 
     public TrashViewModel() {
