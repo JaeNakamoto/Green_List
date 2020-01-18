@@ -12,7 +12,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.zero.greenlist.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrashFragment extends Fragment {
 
@@ -20,6 +29,7 @@ public class TrashFragment extends Fragment {
 
     public View onCreateView (@NonNull LayoutInflater inflater,
                               ViewGroup container, Bundle savedInstanceState) {
+
         trashViewModel =
                 ViewModelProviders.of(this).get(TrashViewModel.class);
         View root = inflater.inflate(R.layout.fragment_trashcan, container, false);
@@ -28,6 +38,26 @@ public class TrashFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
+                PieChart pieChart = getActivity().findViewById(R.id.piechart);
+                pieChart.setUsePercentValues(true);
+                Description desc = new Description();
+                desc.setText("Overzicht prullenbak");
+                desc.setTextSize(20f);
+
+                pieChart.setDescription(desc);
+
+                pieChart.setHoleRadius(35f);
+                pieChart.setTransparentCircleRadius(35f);
+
+                List<PieEntry> value = new ArrayList<>();
+                value.add(new PieEntry(70f,"Vol"));
+                value.add(new PieEntry(30f, "leeg"));
+
+                PieDataSet pieDataSet = new PieDataSet(value, "Prullenbakinhoud");
+                PieData pieData = new PieData(pieDataSet);
+                pieChart.setData(pieData);
+                pieDataSet.setColors(ColorTemplate.PASTEL_COLORS);
+                pieChart.animateXY(1400, 1400);
             }
         });
         return root;
