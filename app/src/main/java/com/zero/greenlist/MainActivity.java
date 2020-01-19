@@ -1,9 +1,12 @@
 package com.zero.greenlist;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.zero.greenlist.ui.CreateList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -30,4 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    public void launchCreateListActivity(View view) {
+        Intent intent = new Intent(this, CreateList.class);
+        startActivity(intent);
+    }
 }
