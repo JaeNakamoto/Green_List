@@ -20,6 +20,11 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.zero.greenlist.R;
 
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +43,37 @@ public class TrashFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
+                List<PieEntry> value = new ArrayList<>(); //arraylist omdat geen vaste grote nodig heeft
+                Connection conn = null;
+                float volF, leegF;
+
+                Statement stmt = null;
+                ResultSet rsVol =  null;
+                ResultSet rsLeeg =  null;
+                try{
+                    conn = DriverManager.getConnection("jdbc:mysql://85.149.119.232:3308/databases_greenlist_app" , "zero", "ZeroGreenList" );
+                    stmt = conn.createStatement();
+                    rsVol = stmt.executeQuery("SELECT vol FROM greenlist_sensor");
+                    rsLeeg = stmt.executeQuery("SELECT leeg FROM greenlist_sensor");
+
+                    if(stmt.execute("SELECT vol FROM greenlist_sensor")){
+                        rsVol = stmt.getResultSet();
+                        volF = rsVol.getFloat("vol");
+                        value.add(new PieEntry(volF, "Vol")); //arraylist waarde voor vol in %
+                    }
+                    if(stmt.execute("SELECT leeg FROM greenlist_sensor")){
+                        rsLeeg = stmt.getResultSet();
+                        leegF = rsLeeg.getFloat("leeg");
+                        value.add(new PieEntry(leegF, "Leeg")); //arralist waarde voor leeg in %
+                    }
+                } catch(SQLException exx){
+                    System.out.println("SQLException: " + exx.getMessage());
+                    System.out.println("SQLState: " + exx.getSQLState());
+                    System.out.println("VendorError: " + exx.getErrorCode());
+                }
+
+
+
                 PieChart pieChart = getActivity().findViewById(R.id.piechart);
                 pieChart.setUsePercentValues(true); //zorgt dat procenten gebruikt kunnen worden
                 Description desc = new Description();
@@ -49,9 +85,6 @@ public class TrashFragment extends Fragment {
                 pieChart.setHoleRadius(35f);
                 pieChart.setTransparentCircleRadius(35f);
 
-                List<PieEntry> value = new ArrayList<>(); //arraylist omdat geen vaste grote nodig heeft
-                value.add(new PieEntry(70f,"Vol")); //arraylist waarde voor vol in %
-                value.add(new PieEntry(30f, "Leeg")); //arralist waarde voor leeg in %
 
                 PieDataSet pieDataSet = new PieDataSet(value, "Prullenbakinhoud");
                 PieData pieData = new PieData(pieDataSet);
