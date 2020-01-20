@@ -51,7 +51,7 @@ public class TrashFragment extends Fragment {
                 ResultSet rsVol =  null;
                 ResultSet rsLeeg =  null;
                 try{
-                    conn = DriverManager.getConnection("jdbc:mysql://85.149.119.232:3308/databases_greenlist_app" , "zero", "ZeroGreenList" );
+                    conn = DriverManager.getConnection("jdbc:mysql://85.149.119.232:3308/databases_greenlist_app" , "zero", "ZeroGreenList");
                     stmt = conn.createStatement();
                     rsVol = stmt.executeQuery("SELECT vol FROM greenlist_sensor");
                     rsLeeg = stmt.executeQuery("SELECT leeg FROM greenlist_sensor");

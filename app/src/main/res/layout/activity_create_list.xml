@@ -29,8 +29,7 @@
             android:layout_marginRight="8sp"
             android:ems="10"
             android:hint="@string/new_list"
-            android:inputType="textLongMessage"
-            android:textStyle="bold" />
+            android:inputType="textLongMessage" />
 
         <Button
             android:id="@+id/create_list_button"
