@@ -40,8 +40,9 @@
             android:layout_marginRight="8sp"
             android:layout_marginBottom="8sp"
             android:background="#FFFFFF"
-            android:text="@string/create"
-            android:textColor="@color/colorAccent" />
+            android:text="@string/create_list"
+            android:textColor="@color/colorAccent"
+            android:onClick="launchListActivity"/>
 
     </androidx.cardview.widget.CardView>
 
