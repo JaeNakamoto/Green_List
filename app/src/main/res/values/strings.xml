@@ -10,4 +10,6 @@
     <string name="title_trashcan">Trashcan</string>
     <string name="new_list">New List</string>
     <string name="create_list">Create</string>
+    <string name="action_sort">Sort</string>
+    <string name="action_settings">Settings</string>
 </resources>
