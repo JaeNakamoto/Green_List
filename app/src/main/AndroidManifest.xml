@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.ShoppingList"
-            android:label="List" />
+            android:label="Make List" />
         <activity
             android:name=".ui.CreateList"
             android:label="Create new list" />
