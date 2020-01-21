@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/list_titel"
         app:layout_constraintVertical_bias="1.0" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addProductButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,4 +49,6 @@
         app:srcCompat="@drawable/ic_add_white_24dp"
         android:onClick=""
         android:focusable="true" />
+-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>
