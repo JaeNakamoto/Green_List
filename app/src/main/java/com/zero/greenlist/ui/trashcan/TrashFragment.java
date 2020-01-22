@@ -1,5 +1,6 @@
 package com.zero.greenlist.ui.trashcan;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,7 @@ public class TrashFragment extends Fragment {
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
                 List<PieEntry> value = new ArrayList<>(); //arraylist omdat geen vaste grote nodig heeft
+                value.add(new PieEntry(34f, "Leeg")); //arralist waarde voor leeg in %
                 Connection conn = null;
                 float volF, leegF;
 
@@ -51,7 +53,8 @@ public class TrashFragment extends Fragment {
                 ResultSet rsVol =  null;
                 ResultSet rsLeeg =  null;
                 try{
-                    conn = DriverManager.getConnection("jdbc:mysql://85.149.119.232:3308/databases_greenlist_app" , "zero", "ZeroGreenList");
+                    Class.forName("com.mysql.jdbc.Driver");
+                    conn = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/10DkfAUMii" , "1ODkfAUMii", "8E9HiyrzmC");
                     stmt = conn.createStatement();
                     rsVol = stmt.executeQuery("SELECT vol FROM greenlist_sensor");
                     rsLeeg = stmt.executeQuery("SELECT leeg FROM greenlist_sensor");
@@ -65,8 +68,7 @@ public class TrashFragment extends Fragment {
                         rsLeeg = stmt.getResultSet();
                         leegF = rsLeeg.getFloat("leeg");
                         value.add(new PieEntry(leegF, "Leeg")); //arralist waarde voor leeg in %
-                    }
-                } catch(SQLException exx){
+                    }                    }catch(SQLException exx){
                     System.out.println("SQLException: " + exx.getMessage());
                     System.out.println("SQLState: " + exx.getSQLState());
                     System.out.println("VendorError: " + exx.getErrorCode());
@@ -78,12 +80,11 @@ public class TrashFragment extends Fragment {
                 pieChart.setUsePercentValues(true); //zorgt dat procenten gebruikt kunnen worden
                 Description desc = new Description();
                 desc.setText("Overzicht prullenbak");
-                desc.setTextSize(20f);
+                desc.setTextSize(50f);
 
                 pieChart.setDescription(desc);
-
-                pieChart.setHoleRadius(35f);
-                pieChart.setTransparentCircleRadius(35f);
+                pieChart.setHoleRadius(60f);
+                pieChart.setTransparentCircleRadius(60f);
 
 
                 PieDataSet pieDataSet = new PieDataSet(value, "Prullenbakinhoud");
@@ -91,6 +92,9 @@ public class TrashFragment extends Fragment {
                 pieChart.setData(pieData);
                 pieDataSet.setColors(ColorTemplate.PASTEL_COLORS);
                 pieChart.animateXY(1400, 1400);
+                pieData.setValueTextSize(15f);
+                pieData.setValueTextColor(Color.YELLOW);
+
             }
         });
         return root;
