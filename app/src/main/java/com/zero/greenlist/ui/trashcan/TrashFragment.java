@@ -65,13 +65,14 @@ public class TrashFragment extends Fragment {
 
                 try{
                     Statement stmt = null;
-                    /*String url = "jdbc:mysql://remotemysql.com:3306/10DkfAUMii";
+                    /*String url = "jdbc:mysql://remotemysql.com:3306/10DkfAUMii?autoReconnect=true";
                     String user = "1ODkfAUMii";
                     String pass = "8E9HiyrzmC";*/
                     Class.forName("com.mysql.jdbc.Driver");
                     // Connection conn = null;
                     // conn = DriverManager.getConnection( url, user, pass);
-                    Connection conn = DriverManager.getConnection("jdbc:mysql://remotemysql.com/10DkfAUMii" , "1ODkfAUMii", "8E9HiyrzmC");
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/10DkfAUMii?autoReconnect=true" ,
+                            "1ODkfAUMii", "8E9HiyrzmC");
                     stmt = conn.createStatement();
                     String sqlString = "SELECT vol, leeg FROM greenlist_sensor";
                     ResultSet rs = stmt.executeQuery(sqlString);
