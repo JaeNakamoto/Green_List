@@ -66,7 +66,7 @@ public class TrashFragment extends Fragment {
                 Statement stmt = null;
 
                 try{
-                    String url = "jdbc:mysql://remotemysql.com/10DkfAUMii";
+                    String url = "jdbc:mysql://remotemysql.com:3306/10DkfAUMii";
                     String user = "1ODkfAUMii";
                     String pass = "8E9HiyrzmC";
                     Class.forName("com.mysql.jdbc.Driver");
@@ -75,9 +75,8 @@ public class TrashFragment extends Fragment {
                     String sqlString = "SELECT vol, leeg FROM greenlist_sensor";
                     ResultSet rs = stmt.executeQuery(sqlString);
                     while(rs.next()){
-                        float volF, leegF;
-                        volF = rs.getFloat("vol");
-                        leegF = rs.getFloat("leeg");
+                        float volF = rs.getFloat("vol");
+                        float leegF = rs.getFloat("leeg");
                         value.add(new PieEntry(leegF, "Leeg")); //arralist waarde voor leeg in %
                         value.add(new PieEntry(volF, "Vol")); //arraylist waarde voor vol in %
                     }
