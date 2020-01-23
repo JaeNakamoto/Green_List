@@ -6,6 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.os.AsyncTask;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -26,6 +41,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.*;
+import javax.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,43 +62,50 @@ public class TrashFragment extends Fragment {
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
                 List<PieEntry> value = new ArrayList<>(); //arraylist omdat geen vaste grote nodig heeft
-                value.add(new PieEntry(34f, "Leeg")); //arralist waarde voor leeg in %
                 Connection conn = null;
-                float volF, leegF;
-
                 Statement stmt = null;
-                ResultSet rsVol =  null;
-                ResultSet rsLeeg =  null;
-                try{
-                    Class.forName("com.mysql.jdbc.Driver");
-                    conn = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/10DkfAUMii" , "1ODkfAUMii", "8E9HiyrzmC");
-                    stmt = conn.createStatement();
-                    rsVol = stmt.executeQuery("SELECT vol FROM greenlist_sensor");
-                    rsLeeg = stmt.executeQuery("SELECT leeg FROM greenlist_sensor");
 
-                    if(stmt.execute("SELECT vol FROM greenlist_sensor")){
-                        rsVol = stmt.getResultSet();
-                        volF = rsVol.getFloat("vol");
+                try{
+                    String url = "jdbc:mysql://remotemysql.com/10DkfAUMii";
+                    String user = "1ODkfAUMii";
+                    String pass = "8E9HiyrzmC";
+                    Class.forName("com.mysql.jdbc.Driver");
+                    conn = DriverManager.getConnection( url, user, pass);
+                    stmt = conn.createStatement();
+                    String sqlString = "SELECT vol, leeg FROM greenlist_sensor";
+                    ResultSet rs = stmt.executeQuery(sqlString);
+                    while(rs.next()){
+                        float volF, leegF;
+                        volF = rs.getFloat("vol");
+                        leegF = rs.getFloat("leeg");
+                        value.add(new PieEntry(leegF, "Leeg")); //arralist waarde voor leeg in %
                         value.add(new PieEntry(volF, "Vol")); //arraylist waarde voor vol in %
                     }
-                    if(stmt.execute("SELECT leeg FROM greenlist_sensor")){
-                        rsLeeg = stmt.getResultSet();
-                        leegF = rsLeeg.getFloat("leeg");
-                        value.add(new PieEntry(leegF, "Leeg")); //arralist waarde voor leeg in %
-                    }                    }catch(SQLException exx){
-                    System.out.println("SQLException: " + exx.getMessage());
-                    System.out.println("SQLState: " + exx.getSQLState());
-                    System.out.println("VendorError: " + exx.getErrorCode());
+                    stmt.close();
+                    rs.close();
+                    conn.close();
                 }
+                catch(SQLException ex){
+                    ex.printStackTrace();
+                    System.out.println("SQLException: " + ex.getMessage());
+                    System.out.println("SQLState: " + ex.getSQLState());
+                    System.out.println("VendorError: " + ex.getErrorCode());
 
-
+                }
+                catch(ClassNotFoundException ex) {
+                    System.out.println("Error: unable to load driver class!");
+                    System.exit(1);}
+                catch(InstantiationException ex) {
+                    System.out.println("Error: unable to instantiate driver!");
+                    System.exit(3);
+                        }
 
                 PieChart pieChart = getActivity().findViewById(R.id.piechart);
                 pieChart.setUsePercentValues(true); //zorgt dat procenten gebruikt kunnen worden
                 Description desc = new Description();
                 desc.setText("Overzicht prullenbak");
                 desc.setTextSize(50f);
-
+                value.add(new PieEntry(34f, "Leeg")); //arralist waarde voor leeg in %
                 pieChart.setDescription(desc);
                 pieChart.setHoleRadius(60f);
                 pieChart.setTransparentCircleRadius(60f);
