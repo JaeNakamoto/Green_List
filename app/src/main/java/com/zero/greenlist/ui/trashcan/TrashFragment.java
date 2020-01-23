@@ -62,15 +62,16 @@ public class TrashFragment extends Fragment {
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
                 List<PieEntry> value = new ArrayList<>(); //arraylist omdat geen vaste grote nodig heeft
-                Connection conn = null;
-                Statement stmt = null;
 
                 try{
-                    String url = "jdbc:mysql://remotemysql.com:3306/10DkfAUMii";
+                    Statement stmt = null;
+                    /*String url = "jdbc:mysql://remotemysql.com:3306/10DkfAUMii";
                     String user = "1ODkfAUMii";
-                    String pass = "8E9HiyrzmC";
+                    String pass = "8E9HiyrzmC";*/
                     Class.forName("com.mysql.jdbc.Driver");
-                    conn = DriverManager.getConnection( url, user, pass);
+                    // Connection conn = null;
+                    // conn = DriverManager.getConnection( url, user, pass);
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://remotemysql.com/10DkfAUMii" , "1ODkfAUMii", "8E9HiyrzmC");
                     stmt = conn.createStatement();
                     String sqlString = "SELECT vol, leeg FROM greenlist_sensor";
                     ResultSet rs = stmt.executeQuery(sqlString);
